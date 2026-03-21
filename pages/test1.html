@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 1</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="test-page">
+        <div class="test-main">
+            <div class="card">
+                <h1>Test 1</h1>
+                <p id="question-number">Question 1</p>
+                <pre id="question-text" style="white-space: pre-wrap; font-family: monospace;"></pre>
+
+                <div id="choices" class="choices"></div>
+
+                <div id="frq-container" style="display: none; margin-top: 20px;">
+                    <label for="frq-answer" style="display: block; font-weight: bold; margin-bottom: 8px;">Write your answer:</label>
+                    <textarea
+                        id="frq-answer"
+                        rows="10"
+                        style="width: 100%; padding: 12px; font-size: 16px; line-height: 1.5; border-radius: 10px; border: 1px solid #ccc; resize: vertical; box-sizing: border-box;"
+                        placeholder="Type your FRQ answer here..."
+                    ></textarea>
+                </div>
+
+                <div class="test-buttons">
+                    <button class="btn" id="prev-btn" onclick="prevQuestion()">Previous</button>
+                    <button class="btn" id="next-btn" onclick="nextQuestion()">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-side">
+            <div class="card timer-card">
+                <h2>Timer</h2>
+                <p id="timer">30:00</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/test1.js"></script>
+<script>
+    // Prevent back navigation
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.pushState(null, null, location.href);
+        alert("시험 중에는 뒤로 갈 수 없습니다.");
+    };
+</script>
+</body>
+</html>

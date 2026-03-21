@@ -1,0 +1,121 @@
+[
+  {
+    "question": "Suppose x, y, and z are variables of type int. Assume x != y.\nWhich of the following expressions is true exactly when z is between x and y, not including x and y?\n\nI. (x < z) && (z < y)\nII. (y < z) && (z < x)\nIII. ((x < z) && (z < y)) || ((y < z) && (z < x))",
+    "choices": ["A. I only", "B. II only", "C. III only", "D. I and II only"],
+    "answer": "C. III only"
+  },
+
+  {
+    "question": "Consider the following code segment.\n\n        int a = 7;\n        int b = 4;\n\n        double c = a / b;\n        double d = (double) a / b;\n\nWhich of the following is true?",
+    "choices": ["A. c and d are both 1.75", "B. c is 1.0 and d is 1.75", "C. c is 1.75 and d is 1.0", "D. c is 1.0 and d is 1.0"],
+    "answer": "B. c is 1.0 and d is 1.75"
+  },
+
+  {
+    "question": "Consider the following code segment.\n\n        String s1 = \"code\";\n        String s2 = \"co\" + \"de\";\n        String s3 = new String(\"code\");\n\nWhich of the following expressions evaluates to true?\n\nI. s1 == s2\nII. s1.equals(s3)\nIII. s2 == s3",
+    "choices": ["A. I only", "B. II only", "C. I and II only", "D. I, II, and III"],
+    "answer": "C. I and II only"
+  },
+
+  {
+    "question": "Consider the following method.\n\n        public static int mystery(int n) {\n            int count = 0;\n            while (n > 0) {\n                if (n % 2 == 0) {\n                    count++;\n                }\n                n /= 2;\n            }\n            return count;\n        }\n\nWhat is the value of mystery(10)?",
+    "choices": ["A. 1", "B. 2", "C. 3", "D. 4"],
+    "answer": "B. 2"
+  },
+
+  {
+    "question": "Consider the following code segment.\n\n        int x = 3;\n        int y = 5;\n        int z = 7;\n\n        if (x < y) {\n            if (y < z) {\n                x = z;\n            } else {\n                x = y;\n            }\n        }\n\nWhat is the value of x after the code segment executes?",
+    "choices": ["A. 3", "B. 5", "C. 7", "D. Compilation error"],
+    "answer": "C. 7"
+  },
+
+  {
+    "question": "Consider the following code segment.\n\n        int sum = 0;\n        for (int i = 1; i <= 4; i++) {\n            for (int j = i; j <= 4; j++) {\n                sum += 1;\n            }\n        }\n\nWhat is the value of sum after the code segment executes?",
+    "choices": ["A. 10", "B. 12", "C. 14", "D. 16"],
+    "answer": "A. 10"
+  },
+
+  {
+    "question": "Consider the following array declaration.\n\n        int[] nums = {4, 1, 7, 2, 9};\n\nWhich of the following replaces the value 7 with 5?",
+    "choices": ["A. nums[2] = 5;", "B. nums[3] = 5;", "C. nums[1] = 5;", "D. nums[7] = 5;"],
+    "answer": "A. nums[2] = 5;"
+  },
+
+  {
+    "question": "Consider the following code segment.\n\n        int[] arr = {2, 4, 6, 8};\n        int index = 0;\n\n        while (index < arr.length && arr[index] % 4 != 0) {\n            index++;\n        }\n\nWhat is the value of index after the code segment executes?",
+    "choices": ["A. 0", "B. 1", "C. 2", "D. 4"],
+    "answer": "B. 1"
+  },
+
+  {
+    "question": "Consider the following method.\n\n        public static int mystery(int[] arr) {\n            int count = 0;\n            for (int k = 0; k < arr.length - 1; k++) {\n                if (arr[k] < arr[k + 1]) {\n                    count++;\n                }\n            }\n            return count;\n        }\n\nWhat is returned as a result of the call mystery(new int[]{3, 1, 4, 2, 5})?",
+    "choices": ["A. 1", "B. 2", "C. 3", "D. 4"],
+    "answer": "B. 2"
+  },
+
+  {
+    "question": "Consider the following ArrayList declaration.\n\n        ArrayList<Integer> list = new ArrayList<Integer>();\n        list.add(2);\n        list.add(4);\n        list.add(6);\n        list.add(1, 8);\n\nWhat are the contents of list after the code executes?",
+    "choices": ["A. [2, 4, 6, 8]", "B. [2, 8, 4, 6]", "C. [8, 2, 4, 6]", "D. [2, 4, 8, 6]"],
+    "answer": "B. [2, 8, 4, 6]"
+  },
+
+  {
+    "question": "Consider the following code segment.\n\n        ArrayList<String> words = new ArrayList<String>();\n        words.add(\"red\");\n        words.add(\"blue\");\n        words.add(\"green\");\n        words.remove(1);\n\nWhat is stored in words after the code executes?",
+    "choices": ["A. [\"red\", \"blue\"]", "B. [\"blue\", \"green\"]", "C. [\"red\", \"green\"]", "D. [\"red\", \"blue\", \"green\"]"],
+    "answer": "C. [\"red\", \"green\"]"
+  },
+
+  {
+    "question": "Consider the following class.\n\n        public class Box {\n            private int size;\n            public Box(int s) {\n                size = s;\n            }\n            public void grow() {\n                size += 2;\n            }\n            public int getSize() {\n                return size;\n            }\n        }\n\nSuppose the following code appears in another class.\n\n        Box b1 = new Box(3);\n        Box b2 = b1;\n        b2.grow();\n\nWhat is the value returned by b1.getSize()?",
+    "choices": ["A. 3", "B. 5", "C. 6", "D. Compilation error"],
+    "answer": "B. 5"
+  },
+
+  {
+    "question": "Consider the following class.\n\n        public class Student {\n            private int grade;\n            public Student(int grade) {\n                grade = grade;\n            }\n            public int getGrade() {\n                return grade;\n            }\n        }\n\nWhat value is returned by the following code?\n\n        Student s = new Student(90);\n        s.getGrade();",
+    "choices": ["A. 90", "B. 0", "C. -1", "D. Compilation error"],
+    "answer": "B. 0"
+  },
+
+  {
+    "question": "Consider the following method.\n\n        public static int mystery(String str) {\n            int count = 0;\n            for (int i = 0; i < str.length() - 1; i++) {\n                if (str.substring(i, i + 1).equals(str.substring(i + 1, i + 2))) {\n                    count++;\n                }\n            }\n            return count;\n        }\n\nWhat is returned as a result of mystery(\"aabcc\")?",
+    "choices": ["A. 1", "B. 2", "C. 3", "D. 4"],
+    "answer": "B. 2"
+  },
+
+  {
+    "question": "Consider the following code segment.\n\n        int[][] table = {\n            {1, 2, 3},\n            {4, 5, 6},\n            {7, 8, 9}\n        };\n        int sum = 0;\n        for (int r = 0; r < table.length; r++) {\n            sum += table[r][r];\n        }\n\nWhat is the value of sum after the code segment executes?",
+    "choices": ["A. 12", "B. 15", "C. 18", "D. 45"],
+    "answer": "B. 15"
+  },
+
+  {
+    "question": "Consider the following code segment.\n\n        int[][] mat = {\n            {1, 2},\n            {3, 4},\n            {5, 6}\n        };\n        int count = 0;\n        for (int r = 0; r < mat.length; r++) {\n            for (int c = 0; c < mat[0].length; c++) {\n                if (mat[r][c] % 2 == 0) {\n                    count++;\n                }\n            }\n        }\n\nWhat is the value of count after the code segment executes?",
+    "choices": ["A. 2", "B. 3", "C. 4", "D. 6"],
+    "answer": "B. 3"
+  },
+
+  {
+    "question": "Consider the following method.\n\n        public static boolean mystery(int num) {\n            for (int i = 2; i < num; i++) {\n                if (num % i == 0) {\n                    return false;\n                }\n            }\n            return num > 1;\n        }\n\nWhich of the following best describes the method mystery?",
+    "choices": ["A. Returns true when num is even", "B. Returns true when num is prime", "C. Returns true when num is composite", "D. Returns true when num is positive"],
+    "answer": "B. Returns true when num is prime"
+  },
+
+  {
+    "question": "Consider the following code segment.\n\n        String str = \"ABCDE\";\n        str = str.substring(1, 4);\n        str = str.substring(0, 2);\n\nWhat is the value of str after the code segment executes?",
+    "choices": ["A. AB", "B. BC", "C. BCD", "D. CD"],
+    "answer": "B. BC"
+  },
+
+  {
+    "question": "Consider the following code segment.\n\n        ArrayList<Integer> nums = new ArrayList<Integer>();\n        nums.add(3);\n        nums.add(1);\n        nums.add(4);\n        nums.add(1);\n        int total = 0;\n        for (int k = 0; k < nums.size(); k++) {\n            total += nums.get(k);\n            if (nums.get(k) == 1) {\n                nums.remove(k);\n            }\n        }\n\nWhat is the value of total after the code segment executes?",
+    "choices": ["A. 4", "B. 5", "C. 8", "D. 9"],
+    "answer": "C. 8"
+  },
+
+  {
+    "question": "Consider the following class definitions.\n\n        public class A {\n            private int val;\n            public A(int v) {\n                val = v;\n            }\n            public int getVal() {\n                return val;\n            }\n        }\n\n        public class B {\n            public static void change(A obj) {\n                obj = new A(10);\n            }\n        }\n\nSuppose the following code appears in another class.\n\n        A x = new A(5);\n        B.change(x);\n\nWhat is returned by x.getVal()?",
+    "choices": ["A. 5", "B. 10", "C. 0", "D. Compilation error"],
+    "answer": "A. 5"
+  }
+]

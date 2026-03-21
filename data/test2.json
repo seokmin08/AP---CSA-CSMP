@@ -1,0 +1,103 @@
+[
+  {
+    "question": "Q1\nConsider the following code segment.\n\n        int a = 5;\n        double b = 2;\n        System.out.println(a / b + a / (int)b);\n\nWhat is printed?",
+    "choices": ["A. 4.5", "B. 4.0", "C. 3.5", "D. 3.0"],
+    "answer": "C. 3.5"
+  },
+  {
+    "question": "Q2\nConsider the following code segment.\n\n        String s = \"ABCD\";\n        s = s.substring(1, 3) + s.substring(0, 1);\n\nWhat is the value of s?",
+    "choices": ["A. BCA", "B. BCDA", "C. ABC", "D. BCD"],
+    "answer": "A. BCA"
+  },
+  {
+    "question": "Q3\nConsider the following method.\n\n        public static int mystery(int x) {\n            if (x <= 1) {\n                return 1;\n            }\n            return x + mystery(x - 2);\n        }\n\nWhat is mystery(5)?",
+    "choices": ["A. 6", "B. 9", "C. 8", "D. 7"],
+    "answer": "B. 9"
+  },
+  {
+    "question": "Q4\nConsider the following code segment.\n\n        int count = 0;\n        for (int i = 0; i < 4; i++) {\n            for (int j = i; j < 4; j++) {\n                count++;\n            }\n        }\n\nWhat is the value of count?",
+    "choices": ["A. 10", "B. 16", "C. 12", "D. 8"],
+    "answer": "A. 10"
+  },
+  {
+    "question": "Q5\nConsider the following class.\n\n        public class Test {\n            private int x;\n\n            public Test(int x) {\n                x = x;\n            }\n\n            public int getX() {\n                return x;\n            }\n        }\n\nTest t = new Test(5);\n\nWhat is returned by t.getX()?",
+    "choices": ["A. 5", "B. 0", "C. undefined", "D. error"],
+    "answer": "B. 0"
+  },
+  {
+    "question": "Q6\nConsider the following code segment.\n\n        ArrayList<Integer> list = new ArrayList<Integer>();\n        list.add(1);\n        list.add(2);\n        list.add(3);\n        list.add(1, 4);\n        list.remove(2);\n\nWhat is stored in list?",
+    "choices": ["A. [1, 4, 3]", "B. [1, 4, 2]", "C. [1, 2, 4]", "D. [4, 1, 3]"],
+    "answer": "A. [1, 4, 3]"
+  },
+  {
+    "question": "Q7\nConsider the following method.\n\n        public static boolean check(int x) {\n            return x % 2 == 0 && x % 3 == 0;\n        }\n\nWhat is returned by check(12)?",
+    "choices": ["A. true", "B. false", "C. error", "D. undefined"],
+    "answer": "A. true"
+  },
+  {
+    "question": "Q8\nConsider the following 2D array.\n\n        int[][] arr = {\n            {1, 2, 3},\n            {4, 5, 6}\n        };\n\n        int sum = 0;\n        for (int r = 0; r < arr.length; r++) {\n            for (int c = 0; c < arr[0].length; c++) {\n                sum += arr[r][c];\n            }\n        }\n\nWhat is sum?",
+    "choices": ["A. 21", "B. 18", "C. 15", "D. 12"],
+    "answer": "A. 21"
+  },
+  {
+    "question": "Q9\nConsider the following code segment.\n\n        String str = \"hello\";\n        int count = 0;\n\n        for (int i = 0; i < str.length(); i++) {\n            if (str.substring(i, i + 1).equals(\"l\")) {\n                count++;\n            }\n        }\n\nWhat is count?",
+    "choices": ["A. 1", "B. 2", "C. 3", "D. 0"],
+    "answer": "B. 2"
+  },
+  {
+    "question": "Q10\nConsider the following method.\n\n        public static int mystery(int[] arr) {\n            int sum = 0;\n            for (int i = 0; i < arr.length - 1; i++) {\n                sum += arr[i] * arr[i + 1];\n            }\n            return sum;\n        }\n\nWhat is mystery({1, 2, 3, 4})?",
+    "choices": ["A. 20", "B. 14", "C. 18", "D. 24"],
+    "answer": "A. 20"
+  },
+  {
+    "question": "Q11\nConsider the following code segment.\n\n        int x = 3;\n        int y = 5;\n        int z = 7;\n\n        if (x < y)\n            if (y < z)\n                x = z;\n            else\n                x = y;\n\nWhat is x?",
+    "choices": ["A. 3", "B. 5", "C. 7", "D. error"],
+    "answer": "C. 7"
+  },
+  {
+    "question": "Q12\nConsider the following code segment.\n\n        ArrayList<Integer> nums = new ArrayList<Integer>();\n        nums.add(2);\n        nums.add(4);\n        nums.add(6);\n\n        for (int i = 0; i < nums.size(); i++) {\n            nums.add(i);\n        }\n\nWhat happens?",
+    "choices": ["A. [2,4,6,0,1,2]", "B. infinite loop", "C. runtime error", "D. [2,4,6]"],
+    "answer": "B. infinite loop"
+  },
+  {
+    "question": "Q13\nConsider the following method.\n\n        public static int mystery(ArrayList<Integer> list) {\n            int sum = 0;\n            for (int i = 0; i < list.size(); i++) {\n                sum += list.remove(i);\n            }\n            return sum;\n        }\n\nSuppose nums contains [2, 4, 6, 8]. What is returned by mystery(nums)?",
+    "choices": ["A. 20", "B. 12", "C. 10", "D. 6"],
+    "answer": "C. 10"
+  },
+  {
+    "question": "Q14\nConsider the following code segment.\n\n        int[][] arr = {\n            {1, 2, 3},\n            {4, 5, 6},\n            {7, 8, 9}\n        };\n\n        int sum = 0;\n        for (int r = 0; r < arr.length; r++) {\n            for (int c = 0; c < arr[0].length; c++) {\n                if (r < c) {\n                    sum += arr[r][c];\n                }\n            }\n        }\n\nWhat is the value of sum after the code segment executes?",
+    "choices": ["A. 11", "B. 15", "C. 19", "D. 20"],
+    "answer": "A. 11"
+  },
+  {
+    "question": "Q15\nConsider the following class.\n\n        public class Counter {\n            private int count;\n\n            public Counter() {\n                count = 0;\n            }\n\n            public void increment() {\n                count++;\n            }\n\n            public int getCount() {\n                return count;\n            }\n        }\n\nConsider the following code segment.\n\n        Counter a = new Counter();\n        Counter b = a;\n        a.increment();\n        b.increment();\n        Counter c = new Counter();\n        b = c;\n        b.increment();\n\nWhat are the values returned by a.getCount() and b.getCount(), respectively?",
+    "choices": ["A. 2 and 1", "B. 1 and 1", "C. 2 and 2", "D. 1 and 2"],
+    "answer": "A. 2 and 1"
+  },
+  {
+    "question": "Q16\nConsider the following method.\n\n        public static String mystery(String str) {\n            String result = \"\";\n            for (int i = 0; i < str.length(); i++) {\n                if (i % 2 == 0) {\n                    result = str.substring(i, i + 1) + result;\n                }\n            }\n            return result;\n        }\n\nWhat is returned by mystery(\"COMPUTER\")?",
+    "choices": ["A. RTPOC", "B. RTMC", "C. RTOC", "D. RMOC"],
+    "answer": "A. RTPOC"
+  }
+,
+  {
+    "question": "Q17 (FRQ)\nConsider the following method.\n\n        public static int countEven(int[] arr) {\n            int count = 0;\n            for (int i = 0; i < arr.length; i++) {\n                if (arr[i] % 2 == 0) {\n                    count++;\n                }\n            }\n            return count;\n        }\n\nWrite a method that returns the sum of all odd numbers in the array. Explain your logic.",
+    "choices": [],
+    "answer": "FRQ"
+  },
+  {
+    "question": "Q18 (FRQ)\nConsider the following class.\n\n        public class Student {\n            private String name;\n            private int score;\n\n            public Student(String n, int s) {\n                name = n;\n                score = s;\n            }\n        }\n\nWrite a method that takes an ArrayList<Student> and returns the average score of all students.",
+    "choices": [],
+    "answer": "FRQ"
+  },
+  {
+    "question": "Q19 (FRQ)\nConsider a 2D array of integers.\n\nWrite a method that returns the largest value in the entire 2D array. You must use nested loops.",
+    "choices": [],
+    "answer": "FRQ"
+  },
+  {
+    "question": "Q20 (FRQ)\nConsider the following method.\n\n        public static String mystery(String str) {\n            String result = \"\";\n            for (int i = 0; i < str.length(); i++) {\n                if (Character.isUpperCase(str.charAt(i))) {\n                    result += str.substring(i, i + 1);\n                }\n            }\n            return result;\n        }\n\nWrite a method that does the opposite: returns only lowercase letters from the string. Explain your approach.",
+    "choices": [],
+    "answer": "FRQ"
+  }
+]
