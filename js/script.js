@@ -8,7 +8,7 @@ function login() {
         (studentId === "30420" && password === "0221") ||
         (studentId === "30331" && password === "0906") ||
         (studentId === "30327" && password === "0731") ||
-        (studentId === "20106" && password === "7777")
+        (studentId === "20106" && password === "0516")
     ) {
         localStorage.setItem("currentUser", studentId);
         localStorage.setItem("currentRole", "student");
