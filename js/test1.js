@@ -1,9 +1,55 @@
+import { db, collection, addDoc } from "./firebase.js";
+const TEST_NAME = "Test 1";
+const TEST_DURATION_SECONDS = 30 * 60;
 let questions = [];
 let currentQuestion = 0;
 let selectedAnswer = null;
-let seconds = 30 * 60;
+let seconds = TEST_DURATION_SECONDS;
 let timerInterval = null;
 let userAnswers = [];
+
+function getCurrentUser() {
+    return localStorage.getItem("currentUser") || "unknown";
+}
+
+function getProgressKey() {
+    return `progress_${getCurrentUser()}_${TEST_NAME}`;
+}
+
+function saveProgress() {
+    const progress = {
+        currentQuestion: currentQuestion,
+        userAnswers: [...userAnswers],
+        seconds: seconds,
+        savedAt: new Date().toLocaleString()
+    };
+
+    localStorage.setItem(getProgressKey(), JSON.stringify(progress));
+}
+
+function restoreProgress() {
+    const saved = JSON.parse(localStorage.getItem(getProgressKey()));
+
+    if (!saved) {
+        return;
+    }
+
+    if (Array.isArray(saved.userAnswers) && saved.userAnswers.length === questions.length) {
+        userAnswers = saved.userAnswers;
+    }
+
+    if (typeof saved.currentQuestion === "number" && saved.currentQuestion >= 0 && saved.currentQuestion < questions.length) {
+        currentQuestion = saved.currentQuestion;
+    }
+
+    if (typeof saved.seconds === "number" && saved.seconds > 0) {
+        seconds = saved.seconds;
+    }
+}
+
+function clearProgress() {
+    localStorage.removeItem(getProgressKey());
+}
 
 async function loadQuestions() {
     try {
@@ -11,6 +57,7 @@ async function loadQuestions() {
         questions = await response.json();
 
         userAnswers = new Array(questions.length).fill(null);
+        restoreProgress();
 
         loadQuestion();
         startTimer();
@@ -52,6 +99,7 @@ function loadQuestion() {
             allButtons.forEach(button => button.classList.remove("selected"));
 
             btn.classList.add("selected");
+            saveProgress();
         };
 
         choicesDiv.appendChild(btn);
@@ -75,6 +123,7 @@ function prevQuestion() {
     }
 
     currentQuestion--;
+    saveProgress();
     loadQuestion();
 }
 
@@ -90,17 +139,18 @@ function nextQuestion() {
     }
 
     currentQuestion++;
+    saveProgress();
     loadQuestion();
 }
 
-function submitTest() {
+async function submitTest() {
     if (timerInterval !== null) {
         clearInterval(timerInterval);
         timerInterval = null;
     }
 
     let score = 0;
-    const currentUser = localStorage.getItem("currentUser") || "unknown";
+    const currentUser = getCurrentUser();
     const wrongQuestions = [];
     const questionResults = [];
 
@@ -133,14 +183,14 @@ function submitTest() {
         }
     }
 
-    const elapsedTime = 20 * 60 - seconds;
+    const elapsedTime = TEST_DURATION_SECONDS - seconds;
     localStorage.setItem("test1Score", score);
     localStorage.setItem("test1Total", questions.length);
     localStorage.setItem("test1Time", elapsedTime);
 
     const submission = {
         user: currentUser,
-        test: "Test 1",
+        test: TEST_NAME,
         score: score,
         total: questions.length,
         time: elapsedTime,
@@ -153,6 +203,27 @@ function submitTest() {
     let submissions = JSON.parse(localStorage.getItem("submissions")) || [];
     submissions.push(submission);
     localStorage.setItem("submissions", JSON.stringify(submissions));
+
+    try {
+        await addDoc(collection(db, "submissions"), {
+            ...submission,
+            createdAt: new Date().toISOString()
+        });
+        console.log("Firebase 저장 완료");
+    } catch (error) {
+        console.error("Firebase 저장 실패:", error);
+    }
+
+    let studentHistory = JSON.parse(localStorage.getItem("studentHistory")) || {};
+
+    if (!studentHistory[currentUser]) {
+        studentHistory[currentUser] = [];
+    }
+
+    studentHistory[currentUser].push(submission);
+    localStorage.setItem("studentHistory", JSON.stringify(studentHistory));
+
+    clearProgress();
 
     window.location.href = "result.html";
 }
@@ -173,6 +244,7 @@ function startTimer() {
         const sec = String(seconds % 60).padStart(2, "0");
 
         document.getElementById("timer").textContent = min + ":" + sec;
+        saveProgress();
 
         if (seconds <= 0) {
             clearInterval(timerInterval);

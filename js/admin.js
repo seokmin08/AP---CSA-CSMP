@@ -1,5 +1,6 @@
+import { db, collection, getDocs } from "./firebase.js";
 const table = document.getElementById("submission-table");
-const submissions = JSON.parse(localStorage.getItem("submissions")) || [];
+let submissions = [];
 
 function formatTime(seconds) {
     const min = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -54,6 +55,7 @@ function renderSubmissionTable() {
     if (!table) {
         return;
     }
+    table.innerHTML = "";
 
     const sortedSubs = [...submissions].sort((a, b) => b.score - a.score);
     sortedSubs.forEach(sub => {
@@ -143,9 +145,10 @@ function getMostMissedOption(questionStat) {
 }
 
 function renderQuestionStats() {
-    const questionStats = getQuestionStats();
-
+    const oldSection = document.getElementById("question-stats-section");
+    if (oldSection) oldSection.remove();
     const section = document.createElement("div");
+    section.id = "question-stats-section";
     section.style.marginTop = "30px";
 
     const title = document.createElement("h2");
@@ -211,19 +214,10 @@ function renderQuestionStats() {
 }
 
 function renderHardestQuestions() {
-    const stats = getQuestionStats();
-
-    if (stats.length === 0) {
-        return;
-    }
-
-    const sorted = [...stats].sort((a, b) =>
-        (a.correctCount / a.total) - (b.correctCount / b.total)
-    );
-
-    const top3 = sorted.slice(0, 3);
-
+    const oldSection = document.getElementById("hardest-questions-section");
+    if (oldSection) oldSection.remove();
     const section = document.createElement("div");
+    section.id = "hardest-questions-section";
     section.style.marginTop = "30px";
 
     const title = document.createElement("h2");
@@ -244,11 +238,10 @@ function renderHardestQuestions() {
 }
 
 function renderFrqGrading() {
-    const frqSubs = submissions.filter(sub =>
-        sub.questionResults && sub.questionResults.some(result => result.correctAnswer === "FRQ")
-    );
-
+    const oldSection = document.getElementById("frq-grading-section");
+    if (oldSection) oldSection.remove();
     const section = document.createElement("div");
+    section.id = "frq-grading-section";
     section.style.marginTop = "30px";
 
     const title = document.createElement("h2");
@@ -397,11 +390,6 @@ function renderFrqGrading() {
     document.body.appendChild(section);
 }
 
-renderSubmissionTable();
-updateSummary();
-renderQuestionStats();
-renderHardestQuestions();
-renderFrqGrading();
 // ===== Admin Reset Button =====
 const currentUser = localStorage.getItem("currentUser");
 
@@ -425,10 +413,28 @@ if (currentUser === "seok" || currentUser === "hwang") {
             if (adminUser) {
                 localStorage.setItem("currentUser", adminUser);
             }
-            alert("데이터 초기화 완료");
-            window.location.href = "admin.html";
+            alert("로컬 데이터 초기화 완료 (Firebase 데이터는 유지됩니다).");
+            window.location.reload();
         }
     };
 
     document.body.appendChild(resetBtn);
 }
+
+async function loadAdminData() {
+    try {
+        const snapshot = await getDocs(collection(db, "submissions"));
+        submissions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error("Firebase 불러오기 실패:", error);
+        submissions = JSON.parse(localStorage.getItem("submissions")) || [];
+    }
+
+    renderSubmissionTable();
+    updateSummary();
+    renderQuestionStats();
+    renderHardestQuestions();
+    renderFrqGrading();
+}
+
+loadAdminData();

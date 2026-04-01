@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +9,17 @@
 <body>
     <div class="page">
         <div class="card result-card">
-            <h1>Test 1 Result</h1>
+            <h1>시험 결과</h1>
+            <p id="test-name-text"></p>
             <p id="score-text"></p>
             <p id="time-text"></p>
 
+            <h2>틀린 문제</h2>
             <div id="result-list"></div>
 
             <div class="result-buttons">
-                <a href="home.html" class="btn">Back to Home</a>
-                <button onclick="resetData()" class="btn">Reset Data</button>
+                <a href="home.html" class="btn">홈으로 돌아가기</a>
+                <button onclick="resetData()" class="btn">데이터 초기화</button>
             </div>
         </div>
     </div>

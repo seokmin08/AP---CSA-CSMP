@@ -1,6 +1,5 @@
-const score = localStorage.getItem("test1Score");
-const total = localStorage.getItem("test1Total");
-const time = localStorage.getItem("test1Time");
+const submissions = JSON.parse(localStorage.getItem("submissions")) || [];
+const latest = submissions[submissions.length - 1];
 
 function formatTime(seconds) {
     const min = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -8,73 +7,112 @@ function formatTime(seconds) {
     return min + ":" + sec;
 }
 
-document.getElementById("score-text").textContent =
-    "Your Score: " + score + " / " + total;
+if (latest) {
+    const scoreText = document.getElementById("score-text");
+    const timeText = document.getElementById("time-text");
+    const testNameText = document.getElementById("test-name-text");
+    const container = document.getElementById("result-list");
 
-document.getElementById("time-text").textContent =
-    "Time Used: " + formatTime(Number(time));
+    if (scoreText) {
+        scoreText.textContent = "점수: " + latest.score + " / " + latest.total;
+    }
 
-// Load latest submission and display detailed results
-const submissions = JSON.parse(localStorage.getItem("submissions")) || [];
-const latest = submissions[submissions.length - 1];
+    if (timeText) {
+        timeText.textContent = "소요 시간: " + formatTime(Number(latest.time));
+    }
 
-if (latest && latest.questionResults) {
-    const container = document.getElementById("result-list") || document.body;
-    container.style.display = "flex";
-    container.style.flexDirection = "column";
-    container.style.gap = "16px";
-    container.style.marginTop = "24px";
+    if (testNameText) {
+        testNameText.textContent = latest.test;
+    }
 
-    latest.questionResults.forEach((q) => {
-        const wrapper = document.createElement("div");
-        wrapper.style.background = "#ffffff";
-        wrapper.style.border = q.isCorrect ? "2px solid #22c55e" : "2px solid #ef4444";
-        wrapper.style.borderRadius = "14px";
-        wrapper.style.padding = "18px";
-        wrapper.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.08)";
+    if (container) {
+        container.innerHTML = "";
+        container.style.display = "flex";
+        container.style.flexDirection = "column";
+        container.style.gap = "16px";
+        container.style.marginTop = "24px";
+    }
 
-        const header = document.createElement("div");
-        header.style.display = "flex";
-        header.style.justifyContent = "space-between";
-        header.style.alignItems = "center";
-        header.style.marginBottom = "12px";
+    const wrongQuestions = latest.wrongQuestions || [];
+    const questionResults = latest.questionResults || [];
 
-        const title = document.createElement("h3");
-        title.textContent = "Question " + q.questionNumber;
-        title.style.margin = "0";
-        title.style.fontSize = "20px";
-        title.style.color = "#111827";
+    if (container) {
+        if (wrongQuestions.length === 0) {
+            const perfect = document.createElement("div");
+            perfect.style.background = "#ecfdf5";
+            perfect.style.border = "2px solid #22c55e";
+            perfect.style.borderRadius = "14px";
+            perfect.style.padding = "18px";
+            perfect.style.fontWeight = "700";
+            perfect.style.color = "#166534";
+            perfect.textContent = "모든 문제를 맞혔습니다!";
+            container.appendChild(perfect);
+        } else {
+            wrongQuestions.forEach((wrong) => {
+                const detail = questionResults.find(q => q.questionNumber === wrong.questionNumber);
 
-        const status = document.createElement("span");
-        status.textContent = q.isCorrect ? "Correct" : "Incorrect";
-        status.style.fontWeight = "700";
-        status.style.fontSize = "14px";
-        status.style.padding = "6px 10px";
-        status.style.borderRadius = "999px";
-        status.style.color = "#ffffff";
-        status.style.background = q.isCorrect ? "#22c55e" : "#ef4444";
+                const wrapper = document.createElement("div");
+                wrapper.style.background = "#ffffff";
+                wrapper.style.border = "2px solid #ef4444";
+                wrapper.style.borderRadius = "14px";
+                wrapper.style.padding = "18px";
+                wrapper.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.08)";
 
-        const question = document.createElement("pre");
-        question.textContent = q.questionText;
-        question.style.background = "#111827";
-        question.style.color = "#e5e7eb";
-        question.style.padding = "14px";
-        question.style.borderRadius = "10px";
-        question.style.whiteSpace = "pre-wrap";
-        question.style.fontFamily = "monospace";
-        question.style.fontSize = "14px";
-        question.style.lineHeight = "1.6";
-        question.style.margin = "0";
-        question.style.overflowX = "auto";
+                const title = document.createElement("h3");
+                title.textContent = "Question " + wrong.questionNumber;
+                title.style.margin = "0 0 12px 0";
+                title.style.fontSize = "20px";
+                title.style.color = "#111827";
 
-        header.appendChild(title);
-        header.appendChild(status);
+                const question = document.createElement("pre");
+                question.textContent = wrong.questionText;
+                question.style.background = "#111827";
+                question.style.color = "#e5e7eb";
+                question.style.padding = "14px";
+                question.style.borderRadius = "10px";
+                question.style.whiteSpace = "pre-wrap";
+                question.style.fontFamily = "monospace";
+                question.style.fontSize = "14px";
+                question.style.lineHeight = "1.6";
+                question.style.margin = "0 0 12px 0";
+                question.style.overflowX = "auto";
 
-        wrapper.appendChild(header);
-        wrapper.appendChild(question);
+                const selected = document.createElement("p");
+                selected.style.margin = "6px 0";
+                selected.style.color = "#b91c1c";
+                selected.style.fontWeight = "600";
+                selected.textContent = "내가 고른 답: " + wrong.selectedAnswer;
 
-        container.appendChild(wrapper);
-    });
+                const correct = document.createElement("p");
+                correct.style.margin = "6px 0";
+                correct.style.color = "#166534";
+                correct.style.fontWeight = "600";
+                correct.textContent = "정답: " + wrong.correctAnswer;
+
+                wrapper.appendChild(title);
+                wrapper.appendChild(question);
+                wrapper.appendChild(selected);
+                wrapper.appendChild(correct);
+
+                if (detail && detail.selectedAnswer && detail.correctAnswer) {
+                    const fullSelected = document.createElement("p");
+                    fullSelected.style.margin = "6px 0";
+                    fullSelected.style.color = "#374151";
+                    fullSelected.textContent = "선택한 보기 전체: " + detail.selectedAnswer;
+
+                    const fullCorrect = document.createElement("p");
+                    fullCorrect.style.margin = "6px 0";
+                    fullCorrect.style.color = "#374151";
+                    fullCorrect.textContent = "정답 보기 전체: " + detail.correctAnswer;
+
+                    wrapper.appendChild(fullSelected);
+                    wrapper.appendChild(fullCorrect);
+                }
+
+                container.appendChild(wrapper);
+            });
+        }
+    }
 }
 
 const resetButton = document.querySelector('.result-buttons button');
