@@ -22,7 +22,7 @@
                 <div class="test-item">
                     <h3>Test 1 & 30 Minutes & 3/26</h3>
                     <p>AP CSA MCQ Practice Set 1</p>
-                    <a href="test1.html" class="btn">Start Test 1</a>
+                    <a href="test1.html" class="btn" id="test1-btn">Start Test 1</a>
                 </div>
 
                 <div class="test-item">
@@ -38,6 +38,14 @@
     const user = localStorage.getItem("currentUser");
     if (user) {
         document.getElementById("user-name").textContent = "Welcome, " + user;
+    }
+
+    const test1Key = `submitted_${user}_Test 1`;
+    const test1Btn = document.getElementById("test1-btn");
+
+    if (localStorage.getItem(test1Key) === "true") {
+        test1Btn.textContent = "Review Test 1";
+        test1Btn.href = "result.html";
     }
 </script>
 </html>

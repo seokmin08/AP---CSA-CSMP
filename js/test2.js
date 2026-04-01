@@ -16,6 +16,18 @@ function getProgressKey() {
     return `progress_${getCurrentUser()}_${TEST_NAME}`;
 }
 
+function getSubmittedKey() {
+    return `submitted_${getCurrentUser()}_${TEST_NAME}`;
+}
+
+function hasSubmittedTest() {
+    return localStorage.getItem(getSubmittedKey()) === "true";
+}
+
+function markSubmittedTest() {
+    localStorage.setItem(getSubmittedKey(), "true");
+}
+
 function saveProgress() {
     const progress = {
         currentQuestion: currentQuestion,
@@ -55,6 +67,13 @@ async function loadQuestions() {
     try {
         const response = await fetch("../data/test2.json");
         questions = await response.json();
+
+        if (hasSubmittedTest()) {
+            localStorage.setItem("resultViewTest", TEST_NAME);
+            alert("이미 제출한 시험입니다. 결과 화면으로 이동합니다.");
+            window.location.href = "result.html";
+            return;
+        }
 
         userAnswers = new Array(questions.length).fill(null);
         restoreProgress();
@@ -226,6 +245,7 @@ async function submitTest() {
     localStorage.setItem("test2Score", score);
     localStorage.setItem("test2Total", questions.length);
     localStorage.setItem("test2Time", elapsedTime);
+    localStorage.setItem("resultViewTest", TEST_NAME);
 
     const submission = {
         user: currentUser,
@@ -238,6 +258,8 @@ async function submitTest() {
         wrongQuestions: wrongQuestions,
         submittedAt: new Date().toLocaleString()
     };
+
+    localStorage.setItem("latestSubmission", JSON.stringify(submission));
 
     let submissions = JSON.parse(localStorage.getItem("submissions")) || [];
     submissions.push(submission);
@@ -263,6 +285,7 @@ async function submitTest() {
     localStorage.setItem("studentHistory", JSON.stringify(studentHistory));
 
     clearProgress();
+    markSubmittedTest();
 
     window.location.href = "result.html";
 }
