@@ -28,7 +28,7 @@
                 <div class="test-item">
                     <h3>Test 2 & 45 Minutes & 4/2</h3>
                     <p>AP CSA MCQ & FRQ Practice Set 2</p>
-                    <a href="test2.html" class="btn">Start Test 2</a>
+                    <a href="test2.html" class="btn" id="test2-btn">Start Test 2</a>
                 </div>
             </div>
         </div>
@@ -42,10 +42,16 @@
 
     const test1Key = `submitted_${user}_Test 1`;
     const test1Btn = document.getElementById("test1-btn");
+    const test2Key = `submitted_${user}_Test 2`;
+    const test2Btn = document.getElementById("test2-btn");
 
     if (localStorage.getItem(test1Key) === "true") {
         test1Btn.textContent = "Review Test 1";
         test1Btn.href = "result.html";
+    }
+    if (localStorage.getItem(test2Key) === "true") {
+        test2Btn.textContent = "Review Test 2";
+        test2Btn.href = "result.html";
     }
 </script>
 </html>
