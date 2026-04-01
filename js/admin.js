@@ -147,6 +147,7 @@ function getMostMissedOption(questionStat) {
 function renderQuestionStats() {
     const oldSection = document.getElementById("question-stats-section");
     if (oldSection) oldSection.remove();
+    const questionStats = getQuestionStats();
     const section = document.createElement("div");
     section.id = "question-stats-section";
     section.style.marginTop = "30px";
@@ -216,6 +217,17 @@ function renderQuestionStats() {
 function renderHardestQuestions() {
     const oldSection = document.getElementById("hardest-questions-section");
     if (oldSection) oldSection.remove();
+    const stats = getQuestionStats();
+
+    if (stats.length === 0) {
+        return;
+    }
+
+    const sorted = [...stats].sort((a, b) =>
+        (a.correctCount / a.total) - (b.correctCount / b.total)
+    );
+
+    const top3 = sorted.slice(0, 3);
     const section = document.createElement("div");
     section.id = "hardest-questions-section";
     section.style.marginTop = "30px";
@@ -240,6 +252,9 @@ function renderHardestQuestions() {
 function renderFrqGrading() {
     const oldSection = document.getElementById("frq-grading-section");
     if (oldSection) oldSection.remove();
+    const frqSubs = submissions.filter(sub =>
+        sub.questionResults && sub.questionResults.some(result => result.correctAnswer === "FRQ")
+    );
     const section = document.createElement("div");
     section.id = "frq-grading-section";
     section.style.marginTop = "30px";
