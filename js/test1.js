@@ -255,4 +255,8 @@ function startTimer() {
     }, 1000);
 }
 
+
+window.prevQuestion = prevQuestion;
+window.nextQuestion = nextQuestion;
+window.submitTest = submitTest;
 loadQuestions();
