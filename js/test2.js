@@ -156,7 +156,7 @@ function prevQuestion() {
     loadQuestion();
 }
 
-function nextQuestion() {
+async function nextQuestion() {
     const q = questions[currentQuestion];
 
     if ((q.choices.length === 0 || q.answer === "FRQ")) {
@@ -173,7 +173,7 @@ function nextQuestion() {
     }
 
     if (currentQuestion === questions.length - 1) {
-        submitTest();
+        await submitTest();
         return;
     }
 
@@ -297,4 +297,5 @@ function startTimer() {
 window.prevQuestion = prevQuestion;
 window.nextQuestion = nextQuestion;
 window.submitTest = submitTest;
+
 loadQuestions();

@@ -127,14 +127,14 @@ function prevQuestion() {
     loadQuestion();
 }
 
-function nextQuestion() {
+async function nextQuestion() {
     if (selectedAnswer === null) {
         alert("Please select an answer first.");
         return;
     }
 
     if (currentQuestion === questions.length - 1) {
-        submitTest();
+        await submitTest();
         return;
     }
 
