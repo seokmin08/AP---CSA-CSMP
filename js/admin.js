@@ -2,6 +2,33 @@ import { db, collection, getDocs } from "./firebase.js";
 const table = document.getElementById("submission-table");
 let submissions = [];
 
+function normalizeSubmission(raw) {
+    const normalized = {
+        ...raw,
+        user: raw.user || raw.student || "unknown",
+        test: raw.test || "Unknown Test",
+        score: Number(raw.score ?? 0),
+        total: Number(raw.total ?? 0),
+        time: Number(raw.time ?? 0),
+        answers: Array.isArray(raw.answers) ? raw.answers : [],
+        wrongQuestions: Array.isArray(raw.wrongQuestions) ? raw.wrongQuestions : [],
+        questionResults: Array.isArray(raw.questionResults) ? raw.questionResults.map(result => ({
+            ...result,
+            selectedAnswer: result.selectedAnswer ?? result.selectedOption ?? "No Answer",
+            correctAnswer: result.correctAnswer ?? result.correctOption ?? "",
+            isCorrect: result.isCorrect ?? ((result.selectedAnswer ?? result.selectedOption) === (result.correctAnswer ?? result.correctOption)),
+            questionNumber: Number(result.questionNumber ?? 0),
+            questionText: result.questionText || ""
+        })) : []
+    };
+
+    if ((!normalized.total || normalized.total === 0) && normalized.answers.length > 0) {
+        normalized.total = normalized.answers.length;
+    }
+
+    return normalized;
+}
+
 function formatTime(seconds) {
     const min = String(Math.floor(seconds / 60)).padStart(2, "0");
     const sec = String(seconds % 60).padStart(2, "0");
@@ -57,7 +84,9 @@ function renderSubmissionTable() {
     }
     table.innerHTML = "";
 
-    const sortedSubs = [...submissions].sort((a, b) => b.score - a.score);
+    const sortedSubs = [...submissions]
+        .filter(sub => sub.user !== "test")
+        .sort((a, b) => b.score - a.score);
     sortedSubs.forEach(sub => {
         const row = document.createElement("tr");
 
@@ -439,10 +468,14 @@ if (currentUser === "seok" || currentUser === "hwang") {
 async function loadAdminData() {
     try {
         const snapshot = await getDocs(collection(db, "submissions"));
-        submissions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        submissions = snapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() }))
+            .map(normalizeSubmission);
+        console.log("Firebase에서 불러온 submissions:", submissions);
     } catch (error) {
         console.error("Firebase 불러오기 실패:", error);
-        submissions = JSON.parse(localStorage.getItem("submissions")) || [];
+        submissions = (JSON.parse(localStorage.getItem("submissions")) || []).map(normalizeSubmission);
+        console.log("localStorage fallback submissions:", submissions);
     }
 
     renderSubmissionTable();
