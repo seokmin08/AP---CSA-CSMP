@@ -59,7 +59,7 @@ function createQuestionCard(result) {
 
     const topRow = document.createElement("div");
     topRow.style.display = "grid";
-    topRow.style.gridTemplateColumns = "minmax(0, 2fr) minmax(260px, 1fr)";
+    topRow.style.gridTemplateColumns = "minmax(0, 3fr) minmax(300px, 1fr)";
     topRow.style.gap = "16px";
     topRow.style.alignItems = "stretch";
     topRow.style.marginBottom = "14px";
@@ -69,6 +69,9 @@ function createQuestionCard(result) {
     questionBox.style.color = "#e2e8f0";
     questionBox.style.padding = "16px";
     questionBox.style.borderRadius = "12px";
+    questionBox.style.minHeight = "220px";
+    questionBox.style.display = "flex";
+    questionBox.style.flexDirection = "column";
 
     const questionLabel = document.createElement("div");
     questionLabel.textContent = "문제";
@@ -85,6 +88,7 @@ function createQuestionCard(result) {
     question.style.lineHeight = "1.7";
     question.style.margin = "0";
     question.style.overflowX = "auto";
+    question.style.flex = "1";
 
     questionBox.appendChild(questionLabel);
     questionBox.appendChild(question);
@@ -97,6 +101,7 @@ function createQuestionCard(result) {
     selectedBox.style.display = "flex";
     selectedBox.style.flexDirection = "column";
     selectedBox.style.justifyContent = "center";
+    selectedBox.style.minHeight = "220px";
 
     const selectedLabel = document.createElement("div");
     selectedLabel.textContent = "내가 고른 답";
