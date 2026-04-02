@@ -6,44 +6,58 @@
     <title>관리자 페이지</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
-    <h1>관리자 대시보드</h1>
-    <p>시험 결과 및 통계를 확인합니다.</p>
-    <a href="../index.html">로그아웃</a>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto; background:#f3f4f6; margin:0; padding:20px;">
 
-    <h2>요약</h2>
-    <div id="admin-summary" style="display:flex; gap:16px; flex-wrap:wrap; margin:20px 0;">
-        <div style="border:1px solid #111827; padding:12px; min-width:160px;">
-            <strong>응시자</strong>
-            <p id="total-submissions">0</p>
+    <div style="max-width:1200px; margin:0 auto;">
+
+        <!-- HEADER -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <div>
+                <h1 style="margin:0;">📊 관리자 대시보드</h1>
+                <p style="margin:4px 0; color:#6b7280;">시험 결과 및 통계를 확인합니다</p>
+            </div>
+            <a href="../index.html" style="text-decoration:none; background:#111827; color:white; padding:10px 16px; border-radius:8px;">로그아웃</a>
         </div>
-        <div style="border:1px solid #111827; padding:12px; min-width:160px;">
-            <strong>평균 점수</strong>
-            <p id="average-score">0 / 0</p>
+
+        <!-- SUMMARY CARDS -->
+        <div id="admin-summary" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:16px; margin-bottom:30px;">
+            <div style="background:white; padding:16px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+                <strong>👥 응시자</strong>
+                <h2 id="total-submissions">0</h2>
+            </div>
+            <div style="background:white; padding:16px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+                <strong>📊 평균 점수</strong>
+                <h2 id="average-score">0 / 0</h2>
+            </div>
+            <div style="background:white; padding:16px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+                <strong>🏆 최고 점수</strong>
+                <h2 id="highest-score">0 / 0</h2>
+            </div>
+            <div style="background:white; padding:16px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+                <strong>📉 최저 점수</strong>
+                <h2 id="lowest-score">0 / 0</h2>
+            </div>
         </div>
-        <div style="border:1px solid #111827; padding:12px; min-width:160px;">
-            <strong>최고 점수</strong>
-            <p id="highest-score">0 / 0</p>
+
+        <!-- TABLE -->
+        <div style="background:white; padding:20px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+            <h2 style="margin-top:0;">학생 응시 결과</h2>
+
+            <table style="width:100%; border-collapse:collapse;">
+                <thead>
+                    <tr style="background:#f9fafb;">
+                        <th style="padding:12px; border-bottom:1px solid #e5e7eb;">학생</th>
+                        <th style="padding:12px; border-bottom:1px solid #e5e7eb;">시험</th>
+                        <th style="padding:12px; border-bottom:1px solid #e5e7eb;">점수</th>
+                        <th style="padding:12px; border-bottom:1px solid #e5e7eb;">시간</th>
+                        <th style="padding:12px; border-bottom:1px solid #e5e7eb;">오답</th>
+                    </tr>
+                </thead>
+                <tbody id="submission-table"></tbody>
+            </table>
         </div>
-        <div style="border:1px solid #111827; padding:12px; min-width:160px;">
-            <strong>최저 점수</strong>
-            <p id="lowest-score">0 / 0</p>
-        </div>
+
     </div>
-
-    <h2>학생 응시 결과</h2>
-    <table style="width:100%; margin-top:10px; text-align:left;">
-        <thead>
-            <tr>
-                <th>학생</th>
-                <th>시험</th>
-                <th>점수</th>
-                <th>시간</th>
-                <th>오답</th>
-            </tr>
-        </thead>
-        <tbody id="submission-table"></tbody>
-    </table>
 
     <script type="module" src="../js/admin.js"></script>
 </body>

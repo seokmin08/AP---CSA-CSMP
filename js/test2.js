@@ -208,6 +208,7 @@ async function submitTest() {
     }
 
     let score = 0;
+    let gradedTotal = 0;
     const currentUser = getCurrentUser();
     const wrongQuestions = [];
     const questionResults = [];
@@ -215,9 +216,25 @@ async function submitTest() {
     for (let i = 0; i < questions.length; i++) {
         const selected = userAnswers[i];
         const correct = questions[i].answer;
-        const selectedOption = selected ? selected.charAt(0) : "No Answer";
-        const correctOption = correct.charAt(0);
-        const isCorrect = selected === correct;
+        const isFrq = questions[i].choices.length === 0 || correct === "FRQ";
+        const selectedOption = isFrq ? (selected || "FRQ Answer") : (selected ? selected.charAt(0) : "No Answer");
+        const correctOption = isFrq ? "FRQ" : correct.charAt(0);
+        const isCorrect = isFrq ? null : selected === correct;
+
+        if (!isFrq) {
+            gradedTotal++;
+
+            if (isCorrect) {
+                score++;
+            } else {
+                wrongQuestions.push({
+                    questionNumber: i + 1,
+                    selectedAnswer: selectedOption,
+                    correctAnswer: correctOption,
+                    questionText: questions[i].question
+                });
+            }
+        }
 
         questionResults.push({
             questionNumber: i + 1,
@@ -228,22 +245,11 @@ async function submitTest() {
             isCorrect: isCorrect,
             questionText: questions[i].question
         });
-
-        if (isCorrect) {
-            score++;
-        } else {
-            wrongQuestions.push({
-                questionNumber: i + 1,
-                selectedAnswer: selectedOption,
-                correctAnswer: correctOption,
-                questionText: questions[i].question
-            });
-        }
     }
 
     const elapsedTime = TEST_DURATION_SECONDS - seconds;
     localStorage.setItem("test2Score", score);
-    localStorage.setItem("test2Total", questions.length);
+    localStorage.setItem("test2Total", gradedTotal);
     localStorage.setItem("test2Time", elapsedTime);
     localStorage.setItem("resultViewTest", TEST_NAME);
 
@@ -251,7 +257,7 @@ async function submitTest() {
         user: currentUser,
         test: TEST_NAME,
         score: score,
-        total: questions.length,
+        total: gradedTotal,
         time: elapsedTime,
         answers: [...userAnswers],
         questionResults: questionResults,
