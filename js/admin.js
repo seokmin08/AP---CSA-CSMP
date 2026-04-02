@@ -96,7 +96,7 @@ function getQuestionStats() {
             if (!stats[qNum]) {
                 stats[qNum] = {
                     questionNumber: qNum,
-                    correctOption: result.correctOption,
+                    correctOption: result.correctAnswer,
                     total: 0,
                     correctCount: 0,
                     options: {
@@ -115,7 +115,7 @@ function getQuestionStats() {
                 stats[qNum].correctCount++;
             }
 
-            const option = result.selectedOption || "No Answer";
+            const option = result.selectedAnswer || "No Answer";
             if (stats[qNum].options[option] === undefined) {
                 stats[qNum].options[option] = 0;
             }
