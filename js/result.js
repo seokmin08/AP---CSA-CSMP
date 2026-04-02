@@ -26,52 +26,120 @@ function createQuestionCard(result) {
     const wrapper = document.createElement("div");
     wrapper.style.background = "#ffffff";
     wrapper.style.border = result.isCorrect ? "2px solid #22c55e" : "2px solid #ef4444";
-    wrapper.style.borderRadius = "14px";
-    wrapper.style.padding = "18px";
-    wrapper.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.08)";
+    wrapper.style.borderRadius = "16px";
+    wrapper.style.padding = "22px";
+    wrapper.style.boxShadow = "0 6px 18px rgba(0, 0, 0, 0.08)";
+
+    const header = document.createElement("div");
+    header.style.display = "flex";
+    header.style.justifyContent = "space-between";
+    header.style.alignItems = "center";
+    header.style.flexWrap = "wrap";
+    header.style.gap = "10px";
+    header.style.marginBottom = "14px";
 
     const title = document.createElement("h3");
     title.textContent = "Question " + result.questionNumber;
-    title.style.margin = "0 0 12px 0";
-    title.style.fontSize = "20px";
+    title.style.margin = "0";
+    title.style.fontSize = "22px";
     title.style.color = "#111827";
 
-    const status = document.createElement("p");
-    status.style.margin = "0 0 12px 0";
+    const status = document.createElement("span");
+    status.style.display = "inline-block";
+    status.style.padding = "8px 14px";
+    status.style.borderRadius = "999px";
     status.style.fontWeight = "700";
+    status.style.fontSize = "14px";
+    status.style.background = result.isCorrect ? "#dcfce7" : "#fee2e2";
     status.style.color = result.isCorrect ? "#166534" : "#b91c1c";
     status.textContent = result.isCorrect ? "✅ 맞음" : "❌ 틀림";
 
+    header.appendChild(title);
+    header.appendChild(status);
+
+    const questionBox = document.createElement("div");
+    questionBox.style.background = "#0f172a";
+    questionBox.style.color = "#e2e8f0";
+    questionBox.style.padding = "16px";
+    questionBox.style.borderRadius = "12px";
+    questionBox.style.marginBottom = "16px";
+
+    const questionLabel = document.createElement("div");
+    questionLabel.textContent = "문제";
+    questionLabel.style.fontSize = "13px";
+    questionLabel.style.fontWeight = "700";
+    questionLabel.style.color = "#93c5fd";
+    questionLabel.style.marginBottom = "8px";
+
     const question = document.createElement("pre");
     question.textContent = result.questionText;
-    question.style.background = "#111827";
-    question.style.color = "#e5e7eb";
-    question.style.padding = "14px";
-    question.style.borderRadius = "10px";
     question.style.whiteSpace = "pre-wrap";
     question.style.fontFamily = "monospace";
     question.style.fontSize = "14px";
-    question.style.lineHeight = "1.6";
-    question.style.margin = "0 0 12px 0";
+    question.style.lineHeight = "1.7";
+    question.style.margin = "0";
     question.style.overflowX = "auto";
 
-    const selected = document.createElement("p");
-    selected.style.margin = "6px 0";
-    selected.style.color = result.isCorrect ? "#166534" : "#b91c1c";
-    selected.style.fontWeight = "600";
-    selected.textContent = "내가 고른 답: " + (result.selectedAnswer || "No Answer");
+    questionBox.appendChild(questionLabel);
+    questionBox.appendChild(question);
 
-    const correct = document.createElement("p");
-    correct.style.margin = "6px 0";
-    correct.style.color = "#166534";
-    correct.style.fontWeight = "600";
-    correct.textContent = "정답: " + result.correctAnswer;
+    const answerGrid = document.createElement("div");
+    answerGrid.style.display = "grid";
+    answerGrid.style.gridTemplateColumns = "repeat(auto-fit, minmax(220px, 1fr))";
+    answerGrid.style.gap = "12px";
 
-    wrapper.appendChild(title);
-    wrapper.appendChild(status);
-    wrapper.appendChild(question);
-    wrapper.appendChild(selected);
-    wrapper.appendChild(correct);
+    const selectedBox = document.createElement("div");
+    selectedBox.style.background = result.isCorrect ? "#f0fdf4" : "#fef2f2";
+    selectedBox.style.border = result.isCorrect ? "1px solid #86efac" : "1px solid #fca5a5";
+    selectedBox.style.borderRadius = "12px";
+    selectedBox.style.padding = "14px";
+
+    const selectedLabel = document.createElement("div");
+    selectedLabel.textContent = "내가 고른 답";
+    selectedLabel.style.fontSize = "13px";
+    selectedLabel.style.fontWeight = "700";
+    selectedLabel.style.color = result.isCorrect ? "#166534" : "#b91c1c";
+    selectedLabel.style.marginBottom = "8px";
+
+    const selectedText = document.createElement("div");
+    selectedText.textContent = result.selectedAnswer || "No Answer";
+    selectedText.style.fontSize = "16px";
+    selectedText.style.fontWeight = "600";
+    selectedText.style.color = "#111827";
+    selectedText.style.wordBreak = "break-word";
+
+    selectedBox.appendChild(selectedLabel);
+    selectedBox.appendChild(selectedText);
+
+    const correctBox = document.createElement("div");
+    correctBox.style.background = "#f0fdf4";
+    correctBox.style.border = "1px solid #86efac";
+    correctBox.style.borderRadius = "12px";
+    correctBox.style.padding = "14px";
+
+    const correctLabel = document.createElement("div");
+    correctLabel.textContent = "정답";
+    correctLabel.style.fontSize = "13px";
+    correctLabel.style.fontWeight = "700";
+    correctLabel.style.color = "#166534";
+    correctLabel.style.marginBottom = "8px";
+
+    const correctText = document.createElement("div");
+    correctText.textContent = result.correctAnswer;
+    correctText.style.fontSize = "16px";
+    correctText.style.fontWeight = "600";
+    correctText.style.color = "#111827";
+    correctText.style.wordBreak = "break-word";
+
+    correctBox.appendChild(correctLabel);
+    correctBox.appendChild(correctText);
+
+    answerGrid.appendChild(selectedBox);
+    answerGrid.appendChild(correctBox);
+
+    wrapper.appendChild(header);
+    wrapper.appendChild(questionBox);
+    wrapper.appendChild(answerGrid);
 
     return wrapper;
 }
@@ -90,7 +158,7 @@ function renderResultPage() {
     container.innerHTML = "";
     container.style.display = "flex";
     container.style.flexDirection = "column";
-    container.style.gap = "16px";
+    container.style.gap = "20px";
     container.style.marginTop = "24px";
 
     if (!latest) {
