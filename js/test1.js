@@ -226,13 +226,16 @@ async function submitTest() {
     localStorage.setItem("submissions", JSON.stringify(submissions));
 
     try {
-        await addDoc(collection(db, "submissions"), {
+        console.log("Firebase로 보내는 submission:", submission);
+        const savedDoc = await addDoc(collection(db, "submissions"), {
             ...submission,
             createdAt: new Date().toISOString()
         });
-        console.log("Firebase 저장 완료");
+        console.log("Firebase 저장 완료, 문서 ID:", savedDoc.id);
     } catch (error) {
         console.error("Firebase 저장 실패:", error);
+        alert("Firebase 저장 실패: " + error.message);
+        return;
     }
 
     let studentHistory = JSON.parse(localStorage.getItem("studentHistory")) || {};
@@ -272,7 +275,7 @@ function startTimer() {
             clearInterval(timerInterval);
             timerInterval = null;
             document.getElementById("timer").textContent = "00:00";
-            submitTest();
+            nextQuestion();
         }
     }, 1000);
 }
