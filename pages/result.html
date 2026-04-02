@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="page">
-        <div class="card result-card">
+    <div class="page" style="width: 100%; max-width: 100%; padding: 24px 28px; box-sizing: border-box;">
+        <div class="card result-card" style="width: 100%; max-width: 1600px; margin: 0 auto; padding: 32px 36px; box-sizing: border-box;">
             <div style="margin-bottom: 24px; text-align: center;">
                 <h1 style="margin-bottom: 10px;">시험 리뷰</h1>
                 <p id="test-name-text" style="font-size: 18px; font-weight: 600; margin-bottom: 18px;"></p>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 28px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 32px;">
                 <div style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; text-align: center;">
                     <div style="font-size: 14px; color: #6b7280; margin-bottom: 6px;">점수</div>
                     <div id="score-text" style="font-size: 24px; font-weight: 700;"></div>
@@ -30,7 +30,7 @@
                 <p style="color: #6b7280; margin: 0;">각 문제에서 내가 고른 답, 정답, 맞고 틀린 결과를 한눈에 볼 수 있습니다.</p>
             </div>
 
-            <div id="result-list"></div>
+            <div id="result-list" style="width: 100%;"></div>
 
             <div class="result-buttons" style="margin-top: 28px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
                 <a href="home.html" class="btn">홈으로 돌아가기</a>
