@@ -36,7 +36,7 @@ function createQuestionCard(result) {
     header.style.alignItems = "center";
     header.style.flexWrap = "wrap";
     header.style.gap = "10px";
-    header.style.marginBottom = "14px";
+    header.style.marginBottom = "16px";
 
     const title = document.createElement("h3");
     title.textContent = "Question " + result.questionNumber;
@@ -57,12 +57,18 @@ function createQuestionCard(result) {
     header.appendChild(title);
     header.appendChild(status);
 
+    const topRow = document.createElement("div");
+    topRow.style.display = "grid";
+    topRow.style.gridTemplateColumns = "minmax(0, 2fr) minmax(260px, 1fr)";
+    topRow.style.gap = "16px";
+    topRow.style.alignItems = "stretch";
+    topRow.style.marginBottom = "14px";
+
     const questionBox = document.createElement("div");
     questionBox.style.background = "#0f172a";
     questionBox.style.color = "#e2e8f0";
     questionBox.style.padding = "16px";
     questionBox.style.borderRadius = "12px";
-    questionBox.style.marginBottom = "16px";
 
     const questionLabel = document.createElement("div");
     questionLabel.textContent = "문제";
@@ -83,63 +89,63 @@ function createQuestionCard(result) {
     questionBox.appendChild(questionLabel);
     questionBox.appendChild(question);
 
-    const answerGrid = document.createElement("div");
-    answerGrid.style.display = "grid";
-    answerGrid.style.gridTemplateColumns = "repeat(auto-fit, minmax(220px, 1fr))";
-    answerGrid.style.gap = "12px";
-
     const selectedBox = document.createElement("div");
     selectedBox.style.background = result.isCorrect ? "#f0fdf4" : "#fef2f2";
     selectedBox.style.border = result.isCorrect ? "1px solid #86efac" : "1px solid #fca5a5";
     selectedBox.style.borderRadius = "12px";
-    selectedBox.style.padding = "14px";
+    selectedBox.style.padding = "16px";
+    selectedBox.style.display = "flex";
+    selectedBox.style.flexDirection = "column";
+    selectedBox.style.justifyContent = "center";
 
     const selectedLabel = document.createElement("div");
     selectedLabel.textContent = "내가 고른 답";
     selectedLabel.style.fontSize = "13px";
     selectedLabel.style.fontWeight = "700";
     selectedLabel.style.color = result.isCorrect ? "#166534" : "#b91c1c";
-    selectedLabel.style.marginBottom = "8px";
+    selectedLabel.style.marginBottom = "10px";
 
     const selectedText = document.createElement("div");
     selectedText.textContent = result.selectedAnswer || "No Answer";
-    selectedText.style.fontSize = "16px";
-    selectedText.style.fontWeight = "600";
+    selectedText.style.fontSize = "18px";
+    selectedText.style.fontWeight = "700";
     selectedText.style.color = "#111827";
     selectedText.style.wordBreak = "break-word";
+    selectedText.style.lineHeight = "1.6";
 
     selectedBox.appendChild(selectedLabel);
     selectedBox.appendChild(selectedText);
+
+    topRow.appendChild(questionBox);
+    topRow.appendChild(selectedBox);
 
     const correctBox = document.createElement("div");
     correctBox.style.background = "#f0fdf4";
     correctBox.style.border = "1px solid #86efac";
     correctBox.style.borderRadius = "12px";
-    correctBox.style.padding = "14px";
+    correctBox.style.padding = "16px";
 
     const correctLabel = document.createElement("div");
     correctLabel.textContent = "정답";
     correctLabel.style.fontSize = "13px";
     correctLabel.style.fontWeight = "700";
     correctLabel.style.color = "#166534";
-    correctLabel.style.marginBottom = "8px";
+    correctLabel.style.marginBottom = "10px";
 
     const correctText = document.createElement("div");
     correctText.textContent = result.correctAnswer;
-    correctText.style.fontSize = "16px";
-    correctText.style.fontWeight = "600";
+    correctText.style.fontSize = "18px";
+    correctText.style.fontWeight = "700";
     correctText.style.color = "#111827";
     correctText.style.wordBreak = "break-word";
+    correctText.style.lineHeight = "1.6";
 
     correctBox.appendChild(correctLabel);
     correctBox.appendChild(correctText);
 
-    answerGrid.appendChild(selectedBox);
-    answerGrid.appendChild(correctBox);
-
     wrapper.appendChild(header);
-    wrapper.appendChild(questionBox);
-    wrapper.appendChild(answerGrid);
+    wrapper.appendChild(topRow);
+    wrapper.appendChild(correctBox);
 
     return wrapper;
 }
