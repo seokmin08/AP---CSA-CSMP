@@ -65,7 +65,7 @@ function clearProgress() {
 
 async function loadQuestions() {
     try {
-        const response = await fetch("../data/test2.json");
+        const response = await fetch("../data/test3.json");
         questions = await response.json();
 
         if (hasSubmittedTest()) {
@@ -248,9 +248,9 @@ async function submitTest() {
     }
 
     const elapsedTime = TEST_DURATION_SECONDS - seconds;
-    localStorage.setItem("test2Score", score);
-    localStorage.setItem("test2Total", gradedTotal);
-    localStorage.setItem("test2Time", elapsedTime);
+    localStorage.setItem("test3Score", score);
+    localStorage.setItem("test3Total", gradedTotal);
+    localStorage.setItem("test3Time", elapsedTime);
     localStorage.setItem("resultViewTest", TEST_NAME);
 
     const submission = {
