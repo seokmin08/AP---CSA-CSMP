@@ -1,10 +1,10 @@
 [
   {
-    "question": "Consider the following class declaration: public class Rectangle { private int width; private int height; private String color; public Rectangle(int w, int h, String c) { width = w; height = h; color = c; } public String getColor() { return color; } public boolean isSameSize(Rectangle other) { /* missing code */ } } Two Rectangle objects are considered to have the same size if their width and height values are equal. Which of the following code segments can be used to replace /* missing code */ so that the isSameSize method works correctly?",
+    "question": "Consider the following class declaration:\n\npublic class Rectangle {\n    private int width;\n    private int height;\n    private String color;\n\n    public Rectangle(int w, int h, String c) {\n        width = w;\n        height = h;\n        color = c;\n    }\n\n    public String getColor() {\n        return color;\n    }\n\n    public boolean isSameSize(Rectangle other) {\n        /* missing code */\n    }\n}\n\nTwo Rectangle objects are considered to have the same size if their width and height values are equal. Which of the following code segments can be used to replace /* missing code */ so that the isSameSize method works correctly?",
     "choices": [
       "A. return this.width == other.width && this.height == other.height;",
       "B. return width.equals(other.width) && height.equals(other.height);",
-      "C. return this.width == other.getWidth() && this.height == other.getHeight();",
+      "C. return this.width == other.width && this.height == other.height;",
       "D. return this.color.equals(other.color);"
     ],
     "answer": "A"
