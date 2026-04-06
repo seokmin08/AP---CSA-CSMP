@@ -1,0 +1,135 @@
+[
+  {
+    "question": "Consider the following class declaration: public class Rectangle { private int width; private int height; private String color; public Rectangle(int w, int h, String c) { width = w; height = h; color = c; } public String getColor() { return color; } public boolean isSameSize(Rectangle other) { /* missing code */ } } Two Rectangle objects are considered to have the same size if their width and height values are equal. Which of the following code segments can be used to replace /* missing code */ so that the isSameSize method works correctly?",
+    "choices": [
+      "A. return this.width == other.width && this.height == other.height;",
+      "B. return width.equals(other.width) && height.equals(other.height);",
+      "C. return this.width == other.getWidth() && this.height == other.getHeight();",
+      "D. return this.color.equals(other.color);"
+    ],
+    "answer": "A"
+  },
+  {
+    "question": "Consider the following class declarations:\n\npublic class Circle {\n    private int centerX;\n    private int centerY;\n    private double radius;\n\n    public Circle(int x, int y, double r) {\n        centerX = x;\n        centerY = y;\n        radius = r;\n    }\n\n    public double getRadius() {\n        return radius;\n    }\n\n    public String getLocation() {\n        return \"(\" + centerX + \", \" + centerY + \")\";\n    }\n\n    public boolean isIdentical(Circle otherCircle) {\n        /* missing code */\n    }\n}\n\nTwo Circle objects are considered identical if they have the same centerX, centerY, and radius values.\n\nWhich of the following code segments can be used to replace /* missing code */ so that the isIdentical method works correctly?",
+    "choices": [
+      "A. return this.compareTo(otherCircle) == 0;",
+      "B. return this.centerX == otherCircle.centerX && this.centerY == otherCircle.centerY && this.radius == otherCircle.radius;",
+      "C. return this.centerX.equals(otherCircle.getCenterX()) && this.centerY.equals(otherCircle.getCenterY()) && this.radius == otherCircle.getRadius();",
+      "D. return this.getLocation().equals(otherCircle.getLocation()) && this.getRadius() == otherCircle.getRadius();"
+    ],
+    "answer": "B"
+  },
+  {
+    "question": "A marketing researcher wants to investigate whether there is a relationship between customers who purchase fast food delivery through a mobile app and customers who use a particular ride-sharing app. By working with an online advertising company, the researcher has the following data sets available.\n\n- Data set 1 contains an entry for each customer in a food delivery app. Each entry includes the customer's ID number, the customer's name, the customer's home address, and the total number of orders the customer has placed.\n- Data set 2 contains an entry for each order that has been made in the food delivery app. Each entry includes the order's ID number, the customer's ID number, the date and time of the order, the restaurant's ID number, and the total amount of the order.\n- Data set 3 contains an entry for each rider in a ride-sharing app. Each entry includes the rider's ID number, the rider's name, the rider's home address, and the total number of requests the rider has submitted.\n- Data set 4 contains an entry for each ride requested in the ride-sharing app. Each entry contains the request's ID number, the rider's ID number, the date and time of the request, the driver's ID number, the pickup location, and the drop-off location.\n\nWhich two data sets provide the minimum necessary information to perform the investigation?",
+    "choices": [
+      "A. data sets 1 and 3",
+      "B. data sets 1 and 4",
+      "C. data sets 2 and 3",
+      "D. data sets 2 and 4"
+    ],
+    "answer": "A"
+  }
+  ,
+  {
+    "question": "Consider the following guessing game:\n\nConsider the problem of writing a game in which a user thinks of an integer from 1 to 1,000 inclusive and the computer tries to guess that number. Each time the computer makes a guess, the user makes one of three responses:\n\n- \"lower\" (i.e., the number is lower than the computer's guess)\n- \"higher\" (i.e., the number is higher than the computer's guess)\n- \"you got it in < however many > tries!\"\n\nSuppose the computer starts by guessing a random integer between 1 and 1,000, and then uses a linear (sequential) search strategy to find the user's number. What is the maximum number of guesses the computer could make before guessing the user's number?",
+    "choices": [
+      "A. 9",
+      "B. 10",
+      "C. 999",
+      "D. 1,000"
+    ],
+    "answer": "D"
+  }
+  ,
+  {
+    "question": "Consider the following guessing game:\n\nConsider the problem of writing a game in which a user thinks of an integer from 1 to 1,000 inclusive and the computer tries to guess that number. Each time the computer makes a guess, the user makes one of three responses:\n\n- \"lower\" (i.e., the number is lower than the computer's guess)\n- \"higher\" (i.e., the number is higher than the computer's guess)\n- \"you got it in < however many > tries!\"\n\nSuppose the game is programmed so that the computer uses a binary search strategy for making its guesses. What is the maximum number of guesses the computer could make before guessing the user's number?",
+    "choices": [
+      "A. 9",
+      "B. 10",
+      "C. 999",
+      "D. 1,000"
+    ],
+    "answer": "B"
+  }
+  ,
+  {
+    "question": "Consider the following PiggyBank class:\n\npublic class PiggyBank {\n    private double total;\n    private boolean isFull;\n\n    public double getTotal() {\n        return total;\n    }\n\n    public void incrementTotal(double amt) {\n        /* implementation of incrementTotal */\n    }\n\n    /** Change the value of isFull:\n     * If its current value is true, change it to false.\n     * If its current value is false, change it to true.\n     */\n    public void changePiggyState() {\n        /* implementation of changePiggyState */\n    }\n}\n\nWhich is a correct implementation of changePiggyState?\n\nI   if (isFull)\n        isFull = false;\n    else\n        isFull = true;\n\nII  isFull = !isFull;\n\nIII if (isFull)\n        isFull = !isFull;",
+    "choices": [
+      "A. II only",
+      "B. III only",
+      "C. I and II only",
+      "D. I, II, and III"
+    ],
+    "answer": "C"
+  }
+  ,
+  {
+    "question": "Consider the following PiggyBank class:\n\npublic class PiggyBank {\n    private double total;\n    private boolean isFull;\n\n    public double getTotal() {\n        return total;\n    }\n\n    public void incrementTotal(double amt) {\n        /* implementation of incrementTotal */\n    }\n\n    public void changePiggyState() {\n        /* implementation of changePiggyState */\n    }\n}\n\nWhich is a correct implementation of incrementTotal?",
+    "choices": [
+      "A. return total + amt;",
+      "B. return getTotal() + amt;",
+      "C. total += amt;",
+      "D. getTotal() += amt;"
+    ],
+    "answer": "C"
+  }
+  ,
+  {
+    "question": "Consider the following code segment.\n\ndouble a = 2.0;\ndouble b = 3.6;\ndouble c = (int) b * a;\ndouble d = (int) (b * a);\n\nAfter execution, which of the following correctly represents the values stored in the variables shown above?",
+    "choices": [
+      "A. c = 6.0, d = 7.0",
+      "B. c = 6.0, d = 7.2",
+      "C. c = 7.0, d = 7.2",
+      "D. c = 7.2, d = 7.2"
+    ],
+    "answer": "A"
+  }
+  ,
+  {
+    "question": "Suppose a and b are boolean variables. The expression\n\n!a && !b\n\nwill evaluate to false whenever\n\nI. a and b are both false.\nII. a is false and b is true.\nIII. a is true and b is false.",
+    "choices": [
+      "A. I only",
+      "B. II only",
+      "C. II and III only",
+      "D. I, II, and III"
+    ],
+    "answer": "C"
+  }
+  ,
+  {
+    "question": "A student's test score can be any real number between 0 and 100. The intent of the following class is to print a student's score as a letter grade.\n\npublic class TestReport {\n    private double score;\n\n    public TestReport(double value) {\n        score = value;\n    }\n\n    public void printGrade() {\n        if (score >= 90.0)\n            System.out.println(\"Congratulations!\");\n        if (score >= 80.0)\n            System.out.println(\"Good job.\");\n        if (score >= 70.0)\n            System.out.println(\"Average score.\");\n        if (score >= 60.0)\n            System.out.println(\"Barely passing.\");\n        if (score < 60.0)\n            System.out.println(\"Failing score.\");\n    }\n}\n\nConsider the following segment of a client program.\n\nTestReport t = new TestReport(testScore);\nt.printGrade();\n\nIf testScore is 75.0, what will be output?",
+    "choices": [
+      "A. Average score.\nBarely passing.\nFailing score.",
+      "B. Average score.\nBarely passing.",
+      "C. Average score.",
+      "D. Congratulations!\nGood job.\nAverage score."
+    ],
+    "answer": "B"
+  }
+  ,
+  {
+    "question": "FRQ 1\n\nWrite a class named StarPrinter.\n\nThe class should have:\n- one private instance variable named size of type int\n- a constructor that receives an int and stores it in size\n- a method named printStars that prints a square made of stars (*)\n\nIf size is 4, printStars should print:\n\n****\n****\n****\n****\n\nYou may assume size is greater than 0.",
+    "choices": [],
+    "answer": ""
+  },
+  {
+    "question": "FRQ 2\n\nWrite a class named BankAccount.\n\nThe class should have:\n- a private instance variable owner of type String\n- a private instance variable balance of type double\n- a constructor that receives a String and a double and stores them\n- a method deposit that adds a given amount to balance\n- a method withdraw that subtracts a given amount from balance only if balance is large enough\n- a method getBalance that returns the current balance\n\nIf withdraw is called with an amount greater than the current balance, do not change balance.",
+    "choices": [],
+    "answer": ""
+  },
+  {
+    "question": "FRQ 3\n\nWrite a class named Student.\n\nThe class should have:\n- a private instance variable name of type String\n- a private instance variable score of type int\n- a constructor that receives a String and an int and stores them\n- a method getName that returns the student's name\n- a method getScore that returns the student's score\n- a method hasPassed that returns true if the score is 60 or higher, and false otherwise.",
+    "choices": [],
+    "answer": ""
+  },
+  {
+    "question": "FRQ 4\n\nWrite a class named Book.\n\nThe class should have:\n- a private instance variable title of type String\n- a private instance variable pages of type int\n- a constructor that receives a String and an int and stores them\n- a method isLongBook that returns true if the number of pages is 300 or more, and false otherwise\n- a method getBookInfo that returns a String in this format:\n\ntitle + \" - \" + pages\n\nExample:\nIf title is \"Java\" and pages is 350,\ngetBookInfo returns:\nJava - 350",
+    "choices": [],
+    "answer": ""
+  },
+  {
+    "question": "FRQ 5\n\nWrite a class named Rectangle.\n\nThe class should have:\n- a private instance variable width of type int\n- a private instance variable height of type int\n- a constructor that receives two ints and stores them\n- a method getArea that returns the area of the rectangle\n- a method getPerimeter that returns the perimeter of the rectangle\n- a method isSquare that returns true if width and height are equal, and false otherwise.",
+    "choices": [],
+    "answer": ""
+  }
+]

@@ -1,0 +1,65 @@
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 3</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="test-page">
+        <div class="test-main">
+            <div class="card">
+                <h1>Test 3</h1>
+                <p id="question-number">Question 1</p>
+                <pre id="question-text" style="white-space: pre-wrap; font-family: monospace;"></pre>
+
+                <div id="choices" class="choices"></div>
+
+                <div id="frq-container" style="display: none; margin-top: 20px;">
+                    <label for="frq-answer" style="display: block; font-weight: bold; margin-bottom: 8px;">Write your answer:</label>
+                    <textarea
+                        id="frq-answer"
+                        rows="10"
+                        style="width: 100%; padding: 12px; font-size: 16px; line-height: 1.5; border-radius: 10px; border: 1px solid #ccc; resize: vertical; box-sizing: border-box;"
+                        placeholder="Type your FRQ answer here..."
+                    ></textarea>
+                </div>
+
+                <div class="test-buttons">
+                    <button class="btn" id="prev-btn" onclick="prevQuestion()">Previous</button>
+                    <button class="btn" id="next-btn" onclick="nextQuestion()">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-side">
+            <div class="card timer-card">
+                <h2>Timer</h2>
+                <p id="timer">30:00</p>
+                <p id="exam-warning-count">Warnings: 0</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 시험 중 화면 잠금 -->
+    <div id="exam-lock-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); color:white; z-index:9999; align-items:center; justify-content:center; flex-direction:column;">
+        <h1>시험 중 이탈 감지</h1>
+        <p>다시 돌아오려면 아래 버튼을 클릭하세요.</p>
+        <button id="resume-exam-btn" style="padding:12px 24px; font-size:18px;">시험 계속하기</button>
+    </div>
+
+    <script src="../js/test3.js"></script>
+
+    <script>
+        // 뒤로가기 방지
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.pushState(null, null, location.href);
+            alert("시험 중에는 뒤로 갈 수 없습니다.");
+        };
+    </script>
+</body>
+</html>

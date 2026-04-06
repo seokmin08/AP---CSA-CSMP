@@ -3,14 +3,17 @@ function login() {
     const password = document.getElementById("password").value.trim();
     const message = document.getElementById("message");
 
-    // 학생 계정
-    if (
-        (studentId === "30420" && password === "0221") ||
-        (studentId === "30331" && password === "0906") ||
-        (studentId === "30327" && password === "0731") ||
-        (studentId === "20106" && password === "0516") ||
-        (studentId === "99999" && password === "1234")
-    ) {
+    const students = [
+        { id: "30420", pw: "0221" },
+        { id: "30331", pw: "0906" },
+        { id: "30327", pw: "0731" },
+        { id: "20106", pw: "0516" },
+        { id: "99999", pw: "1234" }
+    ];
+
+    const isStudent = students.some(user => user.id === studentId && user.pw === password);
+
+    if (isStudent) {
         localStorage.setItem("currentUser", studentId);
         localStorage.setItem("currentRole", "student");
         window.location.href = "pages/home.html";
