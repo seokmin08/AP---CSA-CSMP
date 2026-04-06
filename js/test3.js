@@ -1,7 +1,8 @@
+import { db, collection, addDoc } from "./firebase.js";
 let questions = [];
 let currentQuestion = 0;
 let selectedAnswer = null;
-let seconds = 30 * 60;
+let seconds = 25 * 60;
 let timerInterval = null;
 let userAnswers = [];
 let warningCount = 0;
@@ -239,7 +240,7 @@ function nextQuestion() {
     loadQuestion();
 }
 
-function submitTest() {
+async function submitTest() {
     if (timerInterval !== null) {
         clearInterval(timerInterval);
         timerInterval = null;
@@ -280,7 +281,7 @@ function submitTest() {
         }
     }
 
-    const elapsedTime = 30 * 60 - seconds;
+    const elapsedTime = 25 * 60 - seconds;
     localStorage.setItem("test3Score", score);
     localStorage.setItem("test3Total", questions.length);
     localStorage.setItem("test3Time", elapsedTime);
@@ -301,6 +302,18 @@ function submitTest() {
     let submissions = JSON.parse(localStorage.getItem("submissions")) || [];
     submissions.push(submission);
     localStorage.setItem("submissions", JSON.stringify(submissions));
+
+    localStorage.setItem(`submitted_${currentUser}_Test 3`, "true");
+
+    try {
+        await addDoc(collection(db, "submissions"), {
+            ...submission,
+            createdAt: new Date().toISOString()
+        });
+        console.log("Firebase 저장 완료");
+    } catch (error) {
+        console.error("Firebase 저장 실패:", error);
+    }
 
     window.location.href = "result.html";
 }
