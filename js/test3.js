@@ -1,140 +1,98 @@
 import { db, collection, addDoc } from "./firebase.js";
+const TEST_NAME = "Test 3";
+const TEST_DURATION_SECONDS = 25 * 60;
 let questions = [];
 let currentQuestion = 0;
 let selectedAnswer = null;
-let seconds = 25 * 60;
+let seconds = TEST_DURATION_SECONDS;
 let timerInterval = null;
 let userAnswers = [];
-let warningCount = 0;
-let examLocked = false;
-let examStarted = false;
 
-function enterFullscreen() {
-    const el = document.documentElement;
-    if (document.fullscreenElement) {
-        return Promise.resolve();
-    }
-    if (el.requestFullscreen) {
-        return el.requestFullscreen();
-    }
-    return Promise.resolve();
+function getCurrentUser() {
+    return localStorage.getItem("currentUser") || "unknown";
 }
 
-function updateWarningCount() {
-    const label = document.getElementById("exam-warning-count");
-    if (label) {
-        label.textContent = "Warnings: " + warningCount;
-    }
+function getProgressKey() {
+    return `progress_${getCurrentUser()}_${TEST_NAME}`;
 }
 
-function lockExam(reason) {
-    if (!examStarted) {
+function getSubmittedKey() {
+    return `submitted_${getCurrentUser()}_${TEST_NAME}`;
+}
+
+function hasSubmittedTest() {
+    return localStorage.getItem(getSubmittedKey()) === "true";
+}
+
+function markSubmittedTest() {
+    localStorage.setItem(getSubmittedKey(), "true");
+}
+
+function saveProgress() {
+    const progress = {
+        currentQuestion: currentQuestion,
+        userAnswers: [...userAnswers],
+        seconds: seconds,
+        savedAt: new Date().toLocaleString()
+    };
+
+    localStorage.setItem(getProgressKey(), JSON.stringify(progress));
+}
+
+function restoreProgress() {
+    const saved = JSON.parse(localStorage.getItem(getProgressKey()));
+
+    if (!saved) {
         return;
     }
-    examLocked = true;
-    warningCount++;
-    updateWarningCount();
 
-    const overlay = document.getElementById("exam-lock-overlay");
-    if (overlay) {
-        overlay.style.display = "flex";
+    if (Array.isArray(saved.userAnswers) && saved.userAnswers.length === questions.length) {
+        userAnswers = saved.userAnswers;
     }
 
-    if (warningCount >= 3) {
-        alert("경고가 3회 누적되어 시험이 자동 제출됩니다.");
-        submitTest();
-        return;
+    if (typeof saved.currentQuestion === "number" && saved.currentQuestion >= 0 && saved.currentQuestion < questions.length) {
+        currentQuestion = saved.currentQuestion;
     }
 
-    if (reason) {
-        console.warn("Exam warning:", reason);
+    if (typeof saved.seconds === "number" && saved.seconds > 0) {
+        seconds = saved.seconds;
     }
 }
 
-function unlockExam() {
-    examLocked = false;
-    const overlay = document.getElementById("exam-lock-overlay");
-    if (overlay) {
-        overlay.style.display = "none";
-    }
-}
-
-function setupExamSecurity() {
-    const resumeBtn = document.getElementById("resume-exam-btn");
-    if (resumeBtn) {
-        resumeBtn.onclick = async function () {
-            await enterFullscreen();
-            if (document.visibilityState === "visible") {
-                unlockExam();
-            }
-        };
-    }
-
-    document.addEventListener("visibilitychange", function () {
-        if (document.visibilityState !== "visible") {
-            lockExam("Tab switched");
-        }
-    });
-
-    window.addEventListener("blur", function () {
-        lockExam("Window lost focus");
-    });
-
-    document.addEventListener("fullscreenchange", function () {
-        if (examStarted && !document.fullscreenElement) {
-            lockExam("Exited fullscreen");
-        }
-    });
-
-    document.addEventListener("contextmenu", function (e) {
-        e.preventDefault();
-    });
-
-    document.addEventListener("copy", function (e) {
-        e.preventDefault();
-    });
-
-    document.addEventListener("cut", function (e) {
-        e.preventDefault();
-    });
-
-    document.addEventListener("paste", function (e) {
-        e.preventDefault();
-    });
-
-    document.addEventListener("keydown", function (e) {
-        if (e.key === "F12" || (e.ctrlKey && ["c", "v", "x", "u", "p", "s"].includes(e.key.toLowerCase()))) {
-            e.preventDefault();
-        }
-        if (e.altKey && e.key === "Tab") {
-            e.preventDefault();
-        }
-    });
+function clearProgress() {
+    localStorage.removeItem(getProgressKey());
 }
 
 async function loadQuestions() {
     try {
-        const response = await fetch("../data/test3.json");
+        const response = await fetch("../data/test2.json");
         questions = await response.json();
 
+        if (hasSubmittedTest()) {
+            localStorage.setItem("resultViewTest", TEST_NAME);
+            alert("이미 제출한 시험입니다. 결과 화면으로 이동합니다.");
+            window.location.href = "result.html";
+            return;
+        }
+
         userAnswers = new Array(questions.length).fill(null);
+        restoreProgress();
 
         loadQuestion();
-        setupExamSecurity();
-        updateWarningCount();
-        examStarted = true;
-        await enterFullscreen();
         startTimer();
     } catch (error) {
         console.error("Failed to load questions:", error);
-        document.getElementById("question-text").textContent = "문제를 불러오지 못했습니다.";
+        document.getElementById("question-text").textContent =
+            "문제를 불러오지 못했습니다.";
     }
 }
 
 function loadQuestion() {
     const q = questions[currentQuestion];
 
-    document.getElementById("question-number").textContent = "Question " + (currentQuestion + 1);
+    document.getElementById("question-number").textContent =
+        "Question " + (currentQuestion + 1);
+
     document.getElementById("question-text").textContent = q.question;
 
     const choicesDiv = document.getElementById("choices");
@@ -143,29 +101,29 @@ function loadQuestion() {
     const frqContainer = document.getElementById("frq-container");
     const frqInput = document.getElementById("frq-answer");
 
-    if (q.choices.length === 0 || q.answer === "FRQ" || q.answer === "") {
+    // FRQ vs MCQ handling
+    if (q.choices.length === 0 || q.answer === "FRQ") {
+        // Show FRQ, hide choices
         choicesDiv.style.display = "none";
-        if (frqContainer) {
-            frqContainer.style.display = "block";
-        }
+        frqContainer.style.display = "block";
 
-        if (frqInput) {
-            frqInput.value = userAnswers[currentQuestion] || "";
-            selectedAnswer = frqInput.value || null;
-            frqInput.oninput = function () {
-                const val = frqInput.value.trim();
-                userAnswers[currentQuestion] = val;
-                selectedAnswer = val || null;
-            };
-        }
+        // Load saved answer if exists
+        frqInput.value = userAnswers[currentQuestion] || "";
+
+        selectedAnswer = frqInput.value || null;
+
+        // Save on typing
+        frqInput.oninput = function () {
+            const val = frqInput.value.trim();
+            userAnswers[currentQuestion] = val;
+            selectedAnswer = val || null;
+            saveProgress();
+        };
     } else {
+        // Show choices, hide FRQ
         choicesDiv.style.display = "block";
-        if (frqContainer) {
-            frqContainer.style.display = "none";
-        }
-        if (frqInput) {
-            frqInput.value = "";
-        }
+        frqContainer.style.display = "none";
+        frqInput.value = "";
 
         selectedAnswer = userAnswers[currentQuestion];
 
@@ -187,6 +145,7 @@ function loadQuestion() {
                 allButtons.forEach(button => button.classList.remove("selected"));
 
                 btn.classList.add("selected");
+                saveProgress();
             };
 
             choicesDiv.appendChild(btn);
@@ -212,15 +171,16 @@ function prevQuestion() {
     }
 
     currentQuestion--;
+    saveProgress();
     loadQuestion();
 }
 
-function nextQuestion() {
+async function nextQuestion() {
     const q = questions[currentQuestion];
 
-    if (q.choices.length === 0 || q.answer === "FRQ" || q.answer === "") {
+    if ((q.choices.length === 0 || q.answer === "FRQ")) {
         const frqInput = document.getElementById("frq-answer");
-        if (!frqInput || !frqInput.value.trim()) {
+        if (!frqInput.value.trim()) {
             alert("Please write your answer first.");
             return;
         }
@@ -232,11 +192,12 @@ function nextQuestion() {
     }
 
     if (currentQuestion === questions.length - 1) {
-        submitTest();
+        await submitTest();
         return;
     }
 
     currentQuestion++;
+    saveProgress();
     loadQuestion();
 }
 
@@ -247,17 +208,33 @@ async function submitTest() {
     }
 
     let score = 0;
-    const currentUser = localStorage.getItem("currentUser") || "unknown";
+    let gradedTotal = 0;
+    const currentUser = getCurrentUser();
     const wrongQuestions = [];
     const questionResults = [];
 
     for (let i = 0; i < questions.length; i++) {
         const selected = userAnswers[i];
         const correct = questions[i].answer;
-        const isFrq = questions[i].choices.length === 0 || correct === "FRQ" || correct === "";
-        const selectedOption = isFrq ? "FRQ" : (selected ? selected.charAt(0) : "No Answer");
+        const isFrq = questions[i].choices.length === 0 || correct === "FRQ";
+        const selectedOption = isFrq ? (selected || "FRQ Answer") : (selected ? selected.charAt(0) : "No Answer");
         const correctOption = isFrq ? "FRQ" : correct.charAt(0);
-        const isCorrect = isFrq ? false : selected === correct;
+        const isCorrect = isFrq ? null : selected === correct;
+
+        if (!isFrq) {
+            gradedTotal++;
+
+            if (isCorrect) {
+                score++;
+            } else {
+                wrongQuestions.push({
+                    questionNumber: i + 1,
+                    selectedAnswer: selectedOption,
+                    correctAnswer: correctOption,
+                    questionText: questions[i].question
+                });
+            }
+        }
 
         questionResults.push({
             questionNumber: i + 1,
@@ -268,42 +245,31 @@ async function submitTest() {
             isCorrect: isCorrect,
             questionText: questions[i].question
         });
-
-        if (!isFrq && isCorrect) {
-            score++;
-        } else if (!isFrq) {
-            wrongQuestions.push({
-                questionNumber: i + 1,
-                selectedAnswer: selectedOption,
-                correctAnswer: correctOption,
-                questionText: questions[i].question
-            });
-        }
     }
 
-    const elapsedTime = 25 * 60 - seconds;
-    localStorage.setItem("test3Score", score);
-    localStorage.setItem("test3Total", questions.length);
-    localStorage.setItem("test3Time", elapsedTime);
+    const elapsedTime = TEST_DURATION_SECONDS - seconds;
+    localStorage.setItem("test2Score", score);
+    localStorage.setItem("test2Total", gradedTotal);
+    localStorage.setItem("test2Time", elapsedTime);
+    localStorage.setItem("resultViewTest", TEST_NAME);
 
     const submission = {
         user: currentUser,
-        test: "Test 3",
+        test: TEST_NAME,
         score: score,
-        total: questions.length,
+        total: gradedTotal,
         time: elapsedTime,
         answers: [...userAnswers],
         questionResults: questionResults,
         wrongQuestions: wrongQuestions,
-        warningCount: warningCount,
         submittedAt: new Date().toLocaleString()
     };
+
+    localStorage.setItem("latestSubmission", JSON.stringify(submission));
 
     let submissions = JSON.parse(localStorage.getItem("submissions")) || [];
     submissions.push(submission);
     localStorage.setItem("submissions", JSON.stringify(submissions));
-
-    localStorage.setItem(`submitted_${currentUser}_Test 3`, "true");
 
     try {
         await addDoc(collection(db, "submissions"), {
@@ -314,6 +280,18 @@ async function submitTest() {
     } catch (error) {
         console.error("Firebase 저장 실패:", error);
     }
+
+    let studentHistory = JSON.parse(localStorage.getItem("studentHistory")) || {};
+
+    if (!studentHistory[currentUser]) {
+        studentHistory[currentUser] = [];
+    }
+
+    studentHistory[currentUser].push(submission);
+    localStorage.setItem("studentHistory", JSON.stringify(studentHistory));
+
+    clearProgress();
+    markSubmittedTest();
 
     window.location.href = "result.html";
 }
@@ -334,6 +312,7 @@ function startTimer() {
         const sec = String(seconds % 60).padStart(2, "0");
 
         document.getElementById("timer").textContent = min + ":" + sec;
+        saveProgress();
 
         if (seconds <= 0) {
             clearInterval(timerInterval);
@@ -343,5 +322,9 @@ function startTimer() {
         }
     }, 1000);
 }
+
+window.prevQuestion = prevQuestion;
+window.nextQuestion = nextQuestion;
+window.submitTest = submitTest;
 
 loadQuestions();
